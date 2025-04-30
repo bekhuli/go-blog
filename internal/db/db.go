@@ -14,12 +14,12 @@ var DB *sql.DB
 func Connect() {
 	databaseURL := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=%s",
-		config.Env.User,
-		config.Env.Password,
-		config.Env.PublicHost,
-		config.Env.Port,
-		config.Env.Name,
-		config.Env.SSLMode,
+		config.DBEnv.User,
+		config.DBEnv.Password,
+		config.DBEnv.PublicHost,
+		config.DBEnv.Port,
+		config.DBEnv.Name,
+		config.DBEnv.SSLMode,
 	)
 
 	var err error
