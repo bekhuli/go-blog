@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"github.com/bekhuli/go-blog/internal/config"
+	"github.com/bekhuli/go-blog/internal/common/config"
 	"log"
 
 	_ "github.com/lib/pq"

@@ -1,14 +1,13 @@
-package middleware
+package auth
 
 import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/bekhuli/go-blog/internal/common/config"
+	"github.com/bekhuli/go-blog/pkg/utils"
 	"net/http"
 	"strings"
-
-	"github.com/bekhuli/go-blog/internal/config"
-	"github.com/bekhuli/go-blog/internal/utils"
 
 	"github.com/golang-jwt/jwt/v5"
 )

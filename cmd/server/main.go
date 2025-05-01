@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bekhuli/go-blog/internal/db"
+	"github.com/bekhuli/go-blog/pkg/db"
 	"log"
 )
 
