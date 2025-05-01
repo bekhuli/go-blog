@@ -1,10 +1,11 @@
-package config
+package common
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type DBConfig struct {

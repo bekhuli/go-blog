@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/bekhuli/go-blog/pkg/db"
 	"log"
+
+	"github.com/bekhuli/go-blog/pkg/db"
 )
 
 func main() {
