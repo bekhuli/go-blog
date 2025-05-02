@@ -30,12 +30,11 @@ func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, erro
 	const query = `
 		INSERT INTO users (id, username, email, password, created_at)
 		VALUES ($1, $2, $3, $4, $5)
-		RETURNING id, created_at
 	`
 
 	user.CreatedAt = time.Now().UTC()
 
-	err := r.db.QueryRowContext(
+	_, err := r.db.ExecContext(
 		ctx,
 		query,
 		user.ID,
@@ -43,7 +42,7 @@ func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, erro
 		user.Email,
 		user.Password,
 		user.CreatedAt,
-	).Scan(&user.ID, &user.CreatedAt)
+	)
 
 	if err != nil {
 		if isDuplicateError(err) {

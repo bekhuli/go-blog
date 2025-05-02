@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -27,6 +29,18 @@ func (s *Service) RegisterUser(ctx context.Context, dto RegisterRequest) (*User,
 		Username: dto.Username,
 		Email:    dto.Email,
 		Password: string(hashedPassword),
+	}
+
+	if exists, err := s.repo.ExistsByUsername(ctx, user.Username); err != nil {
+		return nil, fmt.Errorf("check if username exists: %w", err)
+	} else if exists {
+		return nil, errors.New("username already exists")
+	}
+
+	if exists, err := s.repo.ExistsByUsername(ctx, user.Username); err != nil {
+		return nil, fmt.Errorf("check if email exists: %w", err)
+	} else if exists {
+		return nil, errors.New("email already exists")
 	}
 
 	return s.repo.CreateUser(ctx, user)

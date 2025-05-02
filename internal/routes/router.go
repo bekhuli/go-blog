@@ -9,7 +9,7 @@ import (
 func InitRouter(db *sql.DB) *mux.Router {
 	r := mux.NewRouter()
 
-	api := r.PathPrefix("api/v1").Subrouter()
+	api := r.PathPrefix("/api/v1").Subrouter()
 
 	userRepo := user.NewSQLRepository(db)
 	userValidator := user.NewValidator()
