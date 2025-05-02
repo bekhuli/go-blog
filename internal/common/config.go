@@ -22,8 +22,14 @@ type JWTConfig struct {
 	JWTExpirationInSeconds int64
 }
 
+type ServerConfig struct {
+	Host string
+	Port string
+}
+
 var DBEnv = initDBConfig()
 var JWTEnv = initJWTConfig()
+var ServerEnv = initServerConfig()
 
 func initDBConfig() DBConfig {
 	if err := godotenv.Load(); err != nil {
@@ -46,6 +52,15 @@ func initJWTConfig() JWTConfig {
 	return JWTConfig{
 		JWTSecret:              getEnv("JWT_SECRET", "doniyer_secret_ditishki"),
 		JWTExpirationInSeconds: getEnvAsInt("JWT_EXP", 3600*24*7),
+	}
+}
+
+func initServerConfig() ServerConfig {
+	godotenv.Load()
+
+	return ServerConfig{
+		Host: getEnv("SERVER_HOST", "127.0.0.1"),
+		Port: getEnv("SERVER_PORT", "8080"),
 	}
 }
 

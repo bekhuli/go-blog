@@ -31,3 +31,29 @@ func (s *Service) RegisterUser(ctx context.Context, dto RegisterRequest) (*User,
 
 	return s.repo.CreateUser(ctx, user)
 }
+
+func (s *Service) LoginUser(ctx context.Context, dto LoginRequest) (*User, error) {
+	if err := s.validator.Validate(dto); err != nil {
+		return nil, err
+	}
+
+	var user *User
+	var err error
+
+	if dto.Username != "" {
+		user, err = s.repo.GetUserByUsername(ctx, dto.Username)
+	} else {
+		user, err = s.repo.GetUserByEmail(ctx, dto.Email)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(dto.Password))
+	if err != nil {
+		return nil, ErrInvalidCredentials
+	}
+
+	return user, nil
+}

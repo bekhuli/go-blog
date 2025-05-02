@@ -1,6 +1,8 @@
 package user
 
-import "time"
+import (
+	"time"
+)
 
 type RegisterRequest struct {
 	Username string `json:"username" validate:"required"`
@@ -10,6 +12,7 @@ type RegisterRequest struct {
 
 type LoginRequest struct {
 	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
