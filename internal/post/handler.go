@@ -1,9 +1,10 @@
 package post
 
 import (
+	"net/http"
+
 	"github.com/bekhuli/go-blog/pkg/utils"
 	"github.com/gorilla/mux"
-	"net/http"
 )
 
 type PostHandler struct {
