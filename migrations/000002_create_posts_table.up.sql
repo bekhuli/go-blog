@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS posts (
+    id UUID PRIMARY KEY,
+    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL
+)
