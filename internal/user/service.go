@@ -13,7 +13,7 @@ type Service struct {
 	validator *Validator
 }
 
-func NewService(repo Repository, validator *Validator) *Service {
+func NewUserService(repo Repository, validator *Validator) *Service {
 	return &Service{repo: repo, validator: validator}
 }
 

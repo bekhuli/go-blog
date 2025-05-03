@@ -12,7 +12,7 @@ type Validator struct {
 
 var usernameRegex = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
 
-func NewValidator() *Validator {
+func NewUserValidator() *Validator {
 	v := validator.New()
 	v.RegisterValidation("username", validateUsername)
 

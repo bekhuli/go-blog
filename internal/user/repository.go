@@ -22,7 +22,7 @@ type SQLRepository struct {
 	db *sql.DB
 }
 
-func NewSQLRepository(db *sql.DB) *SQLRepository {
+func NewUserRepository(db *sql.DB) *SQLRepository {
 	return &SQLRepository{db: db}
 }
 

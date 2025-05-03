@@ -6,7 +6,7 @@ type Validator struct {
 	validate *validator.Validate
 }
 
-func NewValidator() *Validator {
+func NewPostValidator() *Validator {
 	v := validator.New()
 
 	return &Validator{validate: v}
