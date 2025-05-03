@@ -33,3 +33,12 @@ func ToResponse(p *Post) *PostResponse {
 		CreatedAt: p.CreatedAt,
 	}
 }
+
+func ToResponseList(posts []Post) []PostResponse {
+	var res []PostResponse
+	for _, p := range posts {
+		res = append(res, *ToResponse(&p))
+	}
+
+	return res
+}
