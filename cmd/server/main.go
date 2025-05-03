@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/bekhuli/go-blog/internal/common"
-	"github.com/bekhuli/go-blog/internal/routes"
 	"log"
 	"net/http"
+
+	"github.com/bekhuli/go-blog/internal/common"
+	"github.com/bekhuli/go-blog/internal/routes"
 
 	"github.com/bekhuli/go-blog/pkg/db"
 )

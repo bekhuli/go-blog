@@ -14,7 +14,7 @@ func InitRouter(db *sql.DB) *mux.Router {
 	userRepo := user.NewSQLRepository(db)
 	userValidator := user.NewValidator()
 	userService := user.NewService(userRepo, userValidator)
-	userHandler := user.NewHandler(userService)
+	userHandler := user.NewUserHandler(userService)
 
 	user.RegisterRoutes(api, userHandler)
 

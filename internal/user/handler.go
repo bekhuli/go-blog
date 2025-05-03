@@ -8,15 +8,15 @@ import (
 	"github.com/bekhuli/go-blog/pkg/utils"
 )
 
-type Handler struct {
+type UserHandler struct {
 	service *Service
 }
 
-func NewHandler(service *Service) *Handler {
-	return &Handler{service: service}
+func NewUserHandler(service *Service) *UserHandler {
+	return &UserHandler{service: service}
 }
 
-func (h *Handler) RegisterUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var dto RegisterRequest
 	if err := utils.BindJSON(r, &dto); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
@@ -32,7 +32,7 @@ func (h *Handler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJSON(w, http.StatusCreated, ToResponse(user))
 }
 
-func (h *Handler) LoginUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	var dto LoginRequest
 	if err := utils.BindJSON(r, &dto); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
