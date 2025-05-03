@@ -1,10 +1,10 @@
 package user
 
 import (
-	"github.com/bekhuli/go-blog/internal/common"
-	"github.com/bekhuli/go-blog/pkg/auth"
 	"net/http"
 
+	"github.com/bekhuli/go-blog/internal/common"
+	"github.com/bekhuli/go-blog/pkg/auth"
 	"github.com/bekhuli/go-blog/pkg/utils"
 )
 
