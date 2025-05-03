@@ -82,6 +82,7 @@ func (r *SQLRepository) ListPosts(ctx context.Context, authorID string) ([]Post,
 		SELECT id, author_id, title, content, created_at
 		FROM posts
 		WHERE author_id = $1
+		ORDER BY created_at DESC
 	`
 
 	rows, err := r.db.QueryContext(ctx, query, authorID)
