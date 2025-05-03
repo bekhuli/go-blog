@@ -16,7 +16,7 @@ func RegisterPostRoutes(r *mux.Router, h *PostHandler) {
 	protected := r.NewRoute().Subrouter()
 	protected.Use(auth.JWTMiddleware(common.JWTEnv))
 
-	protected.HandleFunc("/posts/{id}", h.GetPostByID).Methods("GET")
+	protected.HandleFunc("/posts", h.CreatePost).Methods("POST")
 	protected.HandleFunc("/posts/{id}", h.UpdatePost).Methods("PUT")
 	protected.HandleFunc("/posts/{id}", h.DeletePost).Methods("DELETE")
 }

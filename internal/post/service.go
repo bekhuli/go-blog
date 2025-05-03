@@ -2,7 +2,6 @@ package post
 
 import (
 	"context"
-
 	"github.com/bekhuli/go-blog/pkg/auth"
 
 	"github.com/google/uuid"
@@ -22,14 +21,14 @@ func (s *Service) CreatePost(ctx context.Context, dto CreatePostRequest) (*Post,
 		return nil, err
 	}
 
-	userID, ok := ctx.Value(auth.UserKey).(string)
+	userID, ok := ctx.Value(auth.UserKey).(uuid.UUID)
 	if !ok {
 		return nil, ErrUnauthorized
 	}
 
 	post := &Post{
 		ID:       uuid.New(),
-		AuthorID: uuid.MustParse(userID),
+		AuthorID: userID,
 		Title:    dto.Title,
 		Content:  dto.Content,
 	}
