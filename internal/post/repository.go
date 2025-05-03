@@ -15,7 +15,7 @@ type Repository interface {
 	GetPostByID(ctx context.Context, id string) (*Post, error)
 	ListPosts(ctx context.Context, authorID string) ([]Post, error)
 	UpdatePost(ctx context.Context, post *Post) (*Post, error)
-	DeletePost(ctx context.Context, id, userID string) (*Post, error)
+	DeletePost(ctx context.Context, id, userID string) error
 }
 
 type SQLRepository struct {
