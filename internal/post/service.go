@@ -49,7 +49,7 @@ func (s *Service) UpdatePost(ctx context.Context, dto *UpdatePostRequest, postID
 		return nil, err
 	}
 
-	userID, ok := ctx.Value(auth.UserKey).(string)
+	userID, ok := ctx.Value(auth.UserKey).(uuid.UUID)
 	if !ok {
 		return nil, ErrUnauthorized
 	}
@@ -59,7 +59,7 @@ func (s *Service) UpdatePost(ctx context.Context, dto *UpdatePostRequest, postID
 		return nil, err
 	}
 
-	if existingPost.AuthorID.String() != userID {
+	if existingPost.AuthorID != userID {
 		return nil, ErrForbidden
 	}
 
@@ -75,12 +75,12 @@ func (s *Service) UpdatePost(ctx context.Context, dto *UpdatePostRequest, postID
 }
 
 func (s *Service) DeletePost(ctx context.Context, id string) (*DeletePostResponse, error) {
-	userID, ok := ctx.Value(auth.UserKey).(string)
+	userID, ok := ctx.Value(auth.UserKey).(uuid.UUID)
 	if !ok {
 		return nil, ErrUnauthorized
 	}
 
-	err := s.repo.DeletePost(ctx, id, userID)
+	err := s.repo.DeletePost(ctx, id, userID.String())
 	if err != nil {
 		return nil, err
 	}
