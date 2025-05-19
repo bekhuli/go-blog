@@ -33,16 +33,16 @@ var ServerEnv = initServerConfig()
 
 func initDBConfig() DBConfig {
 	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using default database configuration")
+		log.Fatal("No .env file found")
 	}
 
 	return DBConfig{
-		PublicHost: getEnv("PUBLIC_HOST", "localhost"),
-		Port:       getEnv("DB_PORT", "5432"),
-		User:       getEnv("DB_USER", "root"),
-		Password:   getEnv("DB_PASSWORD", "1234"),
-		Name:       getEnv("DB_NAME", "blog"),
-		SSLMode:    getEnv("DB_SSL_MODE", "disable"),
+		PublicHost: getEnv("PUBLIC_HOST"),
+		Port:       getEnv("DB_PORT"),
+		User:       getEnv("DB_USER"),
+		Password:   getEnv("DB_PASSWORD"),
+		Name:       getEnv("DB_NAME"),
+		SSLMode:    getEnv("DB_SSL_MODE"),
 	}
 }
 
@@ -50,8 +50,8 @@ func initJWTConfig() JWTConfig {
 	godotenv.Load()
 
 	return JWTConfig{
-		JWTSecret:              getEnv("JWT_SECRET", "doniyer_secret_ditishki"),
-		JWTExpirationInSeconds: getEnvAsInt("JWT_EXP", 3600*24*7),
+		JWTSecret:              getEnv("JWT_SECRET"),
+		JWTExpirationInSeconds: getEnvAsInt("JWT_EXP"),
 	}
 }
 
@@ -59,28 +59,26 @@ func initServerConfig() ServerConfig {
 	godotenv.Load()
 
 	return ServerConfig{
-		Host: getEnv("SERVER_HOST", "127.0.0.1"),
-		Port: getEnv("SERVER_PORT", "8080"),
+		Host: getEnv("SERVER_HOST"),
+		Port: getEnv("SERVER_PORT"),
 	}
 }
 
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
+func getEnv(key string) string {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		log.Fatalf("Environment variable %s not set", key)
 	}
 
-	return fallback
+	return value
 }
 
-func getEnvAsInt(key string, fallback int64) int64 {
-	if value, ok := os.LookupEnv(key); ok {
-		i, err := strconv.ParseInt(value, 10, 64)
-		if err != nil {
-			return fallback
-		}
-
-		return i
+func getEnvAsInt(key string) int64 {
+	valueStr := getEnv(key)
+	valueInt, err := strconv.ParseInt(valueStr, 10, 64)
+	if err != nil {
+		log.Fatalf("Invalid int value for environment variable %s: %v", key, err)
 	}
 
-	return fallback
+	return valueInt
 }
