@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"log"
 
 	"github.com/bekhuli/go-blog/internal/post"
 	"github.com/bekhuli/go-blog/internal/user"
@@ -15,7 +16,11 @@ func InitRouter(db *sql.DB) *mux.Router {
 	api := r.PathPrefix("/api/v1").Subrouter()
 
 	// --- USER ---
-	userRepo := user.NewUserRepository(db)
+	userRepo, err := user.NewUserRepository(db)
+	if err != nil {
+		log.Fatalf("init user repo: %w", err)
+	}
+
 	userValidator := user.NewUserValidator()
 	userService := user.NewUserService(userRepo, userValidator)
 	userHandler := user.NewUserHandler(userService)

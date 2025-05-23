@@ -19,24 +19,38 @@ type Repository interface {
 }
 
 type SQLRepository struct {
-	db *sql.DB
+	db         *sql.DB
+	userRoleID string
 }
 
-func NewUserRepository(db *sql.DB) *SQLRepository {
-	return &SQLRepository{db: db}
+func NewUserRepository(db *sql.DB) (*SQLRepository, error) {
+	const roleQuery = `SELECT id FROM roles WHERE role = 'user'`
+
+	var roleID string
+	err := db.QueryRow(roleQuery).Scan(&roleID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get role id: %w", err)
+	}
+
+	return &SQLRepository{db: db, userRoleID: roleID}, nil
 }
 
 func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, error) {
-	const query = `
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
+	const userQuery = `
 		INSERT INTO users (id, username, email, password, created_at)
 		VALUES ($1, $2, $3, $4, $5)
 	`
 
 	user.CreatedAt = time.Now().UTC()
 
-	_, err := r.db.ExecContext(
+	_, err = tx.ExecContext(
 		ctx,
-		query,
+		userQuery,
 		user.ID,
 		user.Username,
 		user.Email,
@@ -45,11 +59,22 @@ func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, erro
 	)
 
 	if err != nil {
+		tx.Rollback()
 		if isDuplicateError(err) {
 			return nil, ErrUserExists
 		}
 
 		return nil, fmt.Errorf("user repository create: %w", err)
+	}
+
+	_, err = tx.ExecContext(ctx, `INSERT INTO user_role (user_id, role_id) VALUES ($1, $2)`, user.ID, r.userRoleID)
+	if err != nil {
+		tx.Rollback()
+		return nil, fmt.Errorf("failed to add to user role: %w", err)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return nil, fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
 	return user, nil
