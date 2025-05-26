@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/bekhuli/go-blog/internal/common"
@@ -52,4 +53,19 @@ func (h *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteJSON(w, http.StatusOK, map[string]string{"token": token})
+}
+
+func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
+	userID, ok := auth.GetUserIDFromContext(r.Context())
+	if !ok {
+		utils.WriteError(w, http.StatusUnauthorized, errors.New("unauthorized"))
+		return
+	}
+
+	user, err := h.service.GetUserByID(r.Context(), userID.String())
+	if err != nil {
+		utils.WriteError(w, http.StatusNotFound, err)
+	}
+
+	utils.WriteJSON(w, http.StatusOK, ToResponse(user))
 }

@@ -4,10 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/bekhuli/go-blog/internal/common"
-	"github.com/bekhuli/go-blog/pkg/utils"
 	"net/http"
 	"strings"
+
+	"github.com/bekhuli/go-blog/internal/common"
+	"github.com/bekhuli/go-blog/pkg/utils"
+
+	"github.com/google/uuid"
 )
 
 type contextKey string
@@ -39,4 +42,9 @@ func JWTMiddleware(cfg common.JWTConfig) func(handler http.Handler) http.Handler
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
+}
+
+func GetUserIDFromContext(ctx context.Context) (uuid.UUID, bool) {
+	userID, ok := ctx.Value(UserKey).(uuid.UUID)
+	return userID, ok
 }

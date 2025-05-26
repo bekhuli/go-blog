@@ -16,6 +16,7 @@ type Repository interface {
 	GetUserByUsername(ctx context.Context, username string) (*User, error)
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
 	ExistsByUsername(ctx context.Context, username string) (bool, error)
+	GetUserByID(ctx context.Context, id string) (*User, error)
 }
 
 type SQLRepository struct {
@@ -167,4 +168,22 @@ func (r *SQLRepository) ExistsByUsername(ctx context.Context, username string) (
 	}
 
 	return exists, nil
+}
+
+func (r *SQLRepository) GetUserByID(ctx context.Context, id string) (*User, error) {
+	const query = `SELECT id, username, email, avatar, created_at FROM users WHERE id = $1`
+
+	var user User
+	err := r.db.QueryRowContext(ctx, query, id).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Email,
+		&user.Avatar,
+		&user.CreatedAt,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("error getting user by ID: %w", err)
+	}
+
+	return &user, nil
 }

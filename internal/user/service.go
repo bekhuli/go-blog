@@ -71,3 +71,7 @@ func (s *Service) LoginUser(ctx context.Context, dto LoginRequest) (*User, error
 
 	return user, nil
 }
+
+func (s *Service) GetUserByID(ctx context.Context, id string) (*User, error) {
+	return s.repo.GetUserByID(ctx, id)
+}
