@@ -84,7 +84,7 @@ func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, erro
 
 func (r *SQLRepository) GetUserByEmail(ctx context.Context, email string) (*User, error) {
 	const query = `
-		SELECT id, username, email, password, created_at
+		SELECT id, username, email, password, avatar, created_at
 		FROM users
 		WHERE email = $1
 	`
@@ -95,6 +95,7 @@ func (r *SQLRepository) GetUserByEmail(ctx context.Context, email string) (*User
 		&user.Username,
 		&user.Email,
 		&user.Password,
+		&user.Avatar,
 		&user.CreatedAt,
 	)
 
@@ -116,7 +117,7 @@ func isDuplicateError(err error) bool {
 
 func (r *SQLRepository) GetUserByUsername(ctx context.Context, username string) (*User, error) {
 	const query = `
-		SELECT id, username, email, password, created_at
+		SELECT id, username, email, password, avatar, created_at
 		FROM users
 		WHERE username = $1
 	`
@@ -127,6 +128,7 @@ func (r *SQLRepository) GetUserByUsername(ctx context.Context, username string) 
 		&user.Username,
 		&user.Email,
 		&user.Password,
+		&user.Avatar,
 		&user.CreatedAt,
 	)
 
