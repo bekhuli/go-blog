@@ -20,6 +20,7 @@ type Response struct {
 	ID        string    `json:"id"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
+	Avatar    string    `json:"avatar"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -28,6 +29,7 @@ func ToResponse(u *User) *Response {
 		ID:        u.ID.String(),
 		Username:  u.Username,
 		Email:     u.Email,
+		Avatar:    u.Avatar,
 		CreatedAt: u.CreatedAt,
 	}
 }

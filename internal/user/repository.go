@@ -77,6 +77,8 @@ func (r *SQLRepository) CreateUser(ctx context.Context, user *User) (*User, erro
 		return nil, fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
+	err = r.db.QueryRowContext(ctx, `SELECT avatar FROM users WHERE id = $1`, user.ID).Scan(&user.Avatar)
+
 	return user, nil
 }
 

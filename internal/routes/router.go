@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	"github.com/bekhuli/go-blog/internal/post"
 	"github.com/bekhuli/go-blog/internal/user"
@@ -12,6 +13,8 @@ import (
 
 func InitRouter(db *sql.DB) *mux.Router {
 	r := mux.NewRouter()
+
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
 	api := r.PathPrefix("/api/v1").Subrouter()
 
